@@ -28,12 +28,20 @@ app.post('/send', async (req, res) => {
     });
 
     const data = await response.json();
-    const reply = data.choices[0].message.content.trim();
+    console.log("🔍 OpenAI response:", data);  // <-- Add this for debugging
+
+    const reply = data?.choices?.[0]?.message?.content?.trim();
+
+    if (!reply) {
+      console.error("❌ Invalid response format from OpenAI:", data);
+      return res.status(500).json({ reply: "Sorry, Chat with Jong is unavailable right now." });
+    }
+
     res.json({ reply });
-} catch (err) {
-  console.error("Error from OpenAI:", err); // Keep this
-  res.status(500).json({ reply: "Sorry, something went wrong." });
-}
+  } catch (err) {
+    console.error("Error from OpenAI:", err);
+    res.status(500).json({ reply: "Sorry, something went wrong." });
+  }
 });
 
 app.listen(port, () => {
