@@ -30,10 +30,10 @@ app.post('/send', async (req, res) => {
     const data = await response.json();
     const reply = data.choices[0].message.content.trim();
     res.json({ reply });
-  } catch (err) {
-    console.error("Error from OpenAI:", err);
-    res.status(500).json({ reply: "Sorry, something went wrong." });
-  }
+} catch (err) {
+  console.error("Error from OpenAI:", err); // Keep this
+  res.status(500).json({ reply: "Sorry, something went wrong." });
+}
 });
 
 app.listen(port, () => {
